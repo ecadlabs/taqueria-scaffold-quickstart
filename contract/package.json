@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "start:local": ""
+  },
+  "devDependencies": {
+    "@taqueria/plugin-contract-types": "^0.0.0-pr-91-13ae775e",
+    "@taqueria/plugin-flextesa": "^0.0.0-pr-91-13ae775e",
+    "@taqueria/plugin-ligo": "^0.0.0-pr-91-13ae775e",
+    "@taqueria/plugin-taquito": "^0.0.0-pr-91-13ae775e"
+  }
+}

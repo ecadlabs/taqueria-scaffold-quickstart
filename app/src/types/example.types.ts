@@ -2,9 +2,7 @@
 import { ContractAbstractionFromContractType, WalletContractAbstractionFromContractType } from './type-utils';
 import { int } from './type-aliases';
 
-type Storage = {
-    0: int;
-};
+type Storage = int;
 
 type Methods = {
     decrement: (param: int) => Promise<void>;

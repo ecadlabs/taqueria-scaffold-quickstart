@@ -18,7 +18,7 @@ const createContractService = () => {
         contract: undefined as undefined | ExampleContractType,
     };
 
-    const setup = async () => {
+    const setup = async (contractAddress: string) => {
         const wallet = new BeaconWallet({
             name: "Example Wallet",
             // preferredNetwork: 'hangzhounet'
@@ -26,7 +26,8 @@ const createContractService = () => {
         state.userAddress = await wallet.getPKH();
 
         Tezos.setWalletProvider(wallet);
-        state.contractAddress = 'KT1VbxGBSwPeGWu8WtmCpTFSyqwJQMPiLVpn';
+        //state.contractAddress = 'KT1VbxGBSwPeGWu8WtmCpTFSyqwJQMPiLVpn';
+        state.contractAddress = contractAddress;
 
         state.contract = await Tezos.contract.at<ExampleContractType>(state.contractAddress);
 
@@ -43,11 +44,7 @@ const createContractService = () => {
             // Originate contract
             const origination = await Tezos.contract.originate<ExampleContractType>({
                 code: ExampleCode.code,
-                storage: {
-                    // Set initial value
-                    // TODO: Type is wrong, this should be flat
-                    "0": tas.int(42),
-                },
+                storage: tas.int(42),
             });
             // Wait for confirmations
             const contract = await origination.contract(5);
@@ -61,8 +58,7 @@ const createContractService = () => {
 
             const storage = await state.contract.storage();
             console.log('getBalance storage', {storage});
-            // FIX: storage: BigNumber - type is wrong for this contract
-            return tas.number(storage as unknown as string);
+            return tas.number(storage);
         },
         increment: async (amount: number): Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }

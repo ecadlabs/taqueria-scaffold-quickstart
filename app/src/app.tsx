@@ -4,59 +4,52 @@ import { useAsyncWorker } from './utils/hooks';
 
 export const App = () => {
 
-  const [isSetup, setIsSetup] = useState(false);
+  const [isWalletReady, setIsWalletReady] = useState(false);
+  const [isContractReady, setIsContractReady] = useState(false);
 
-  const [contractAddress, setContractAddress] = useState(undefined as undefined | string);
   const [userAddress, setUserAddress] = useState(undefined as undefined | string);
+  const [contractAddress, setContractAddress] = useState(undefined as undefined | string);
   const [balance, setBalance] = useState(0);
 
   const {loading, error, doWork} = useAsyncWorker(); 
 
-  useEffect(()=>{
-    // doWork(async (stopIfUnmounted)=>{
-
-    //   await ContractService.setup();
-    //   const resultContractAddress = await ContractService.getContractAddress();
-    //   const resultUserAddress = await ContractService.getUserAddress();
-    //   stopIfUnmounted();
-
-    //   setContractAddress(resultContractAddress);
-    //   setUserAddress(resultUserAddress);
-
-    //   // Get balance
-    //   const balanceResult = await ContractService.getBalance();
-    //   setBalance(balanceResult);
-    // });
-  },[]);
-
-  const setup = () => {
-    if(!contractAddress){ return; }
-
+  const connectWallet = () => {
     doWork(async (stopIfUnmounted)=>{
-
-      await ContractService.setup(contractAddress);
-      const resultContractAddress = await ContractService.getContractAddress();
+      await ContractService.connectWallet();
       const resultUserAddress = await ContractService.getUserAddress();
       stopIfUnmounted();
-
-      setContractAddress(resultContractAddress);
       setUserAddress(resultUserAddress);
-
-      // Get balance
-      const balanceResult = await ContractService.getBalance();
-      setBalance(balanceResult);
-
-      setIsSetup(true);
+      setIsWalletReady(true);
     });
   };
 
-  const originate = () => {
+  const loadData = async (stopIfUnmounted: () => void) => {
+    const resultContractAddress = await ContractService.getContractAddress();
+    stopIfUnmounted();
+
+    setContractAddress(resultContractAddress);
+
+    // Get balance
+    const balanceResult = await ContractService.getBalance();
+    stopIfUnmounted();
+    setBalance(balanceResult);
+
+    setIsContractReady(true);
+  };
+
+  const loadContract = () => {
+    if(!contractAddress){ return; }
+
     doWork(async (stopIfUnmounted)=>{
+      await ContractService.loadContract(contractAddress);
+      await loadData(stopIfUnmounted);
+    });
+  };
 
-      const result = await ContractService.originate();
-      stopIfUnmounted();
-
-      setContractAddress(result);
+  const originateContract = () => {
+    doWork(async (stopIfUnmounted)=>{
+      await ContractService.originateContract();
+      await loadData(stopIfUnmounted);
     });
   };
   const increment = () => {
@@ -83,23 +76,33 @@ export const App = () => {
       {loading && (<div>loading...</div>)}
       {error && (<div className='error'>{error.message}</div>)}
 
-      {!isSetup && (
+      {!isWalletReady && (
         <>
-            <h3>Enter Contract Address</h3>
-            <input type={'text'} value={contractAddress} onChange={x => setContractAddress(x.target.value)} />
-            <button onClick={setup}>Setup</button>
+            <h3>Connect Wallet</h3>
+            <button onClick={connectWallet}>Connect</button>
         </>
       )}
-      {isSetup && (
+      {isWalletReady && (
         <>
           <h3>User</h3>
           <div>user address: {userAddress}</div>
+        </>
+      )}
+      
+      {isWalletReady && !isContractReady && (
+        <>
+            <h3>Enter Existing Contract Address</h3>
+            <input type={'text'} value={contractAddress} onChange={x => setContractAddress(x.target.value)} />
+            <button onClick={loadContract}>Load Contract</button>
 
+            <h3>Deploy (Originate) New Contract</h3>
+            <button onClick={originateContract}>Deploy Contract</button>
+        </>
+      )}
+      {isWalletReady && isContractReady && (
+        <>
           <h3>Contract Address</h3>
           <div>contract: {contractAddress}</div>
-
-          {/* <h3>Contract</h3> 
-          <button onClick={originate}>Originate</button> */}
 
           <h3>Contract State</h3>
           <div>balance: {balance}</div>

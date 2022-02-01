@@ -1,7 +1,8 @@
 import { TezosToolkit } from '@taquito/taquito';
 import { BeaconWallet } from "@taquito/beacon-wallet";
+import { NetworkType } from "@airgap/beacon-sdk";
 import { ExampleCode } from '../types/example.code';
-import { ExampleContractType } from '../types/example.types';
+import { ExampleContractType, ExampleWalletType } from '../types/example.types';
 import { tas } from '../types/type-aliases';
 
 const createContractService = () => {
@@ -9,49 +10,58 @@ const createContractService = () => {
     // const Tezos = new TezosToolkit(`http://localhost:20000`);
 
     // Using proxy
-    const Tezos = new TezosToolkit(`/`);
-
+    const rpcUrl = `/`;
+    const Tezos = new TezosToolkit(rpcUrl);
 
     const state = {
+        isConnected: false,
         userAddress: undefined as undefined | string,
         contractAddress: undefined as undefined | string,
-        contract: undefined as undefined | ExampleContractType,
-    };
-
-    const setup = async (contractAddress: string) => {
-        const wallet = new BeaconWallet({
-            name: "Example Wallet",
-            // preferredNetwork: 'hangzhounet'
-        });
-        state.userAddress = await wallet.getPKH();
-
-        Tezos.setWalletProvider(wallet);
-        //state.contractAddress = 'KT1VbxGBSwPeGWu8WtmCpTFSyqwJQMPiLVpn';
-        state.contractAddress = contractAddress;
-
-        state.contract = await Tezos.contract.at<ExampleContractType>(state.contractAddress);
-
-        console.log('setup', {state});
+        contract: undefined as undefined | ExampleWalletType,
     };
 
     const service = {
-        setup,
         getUserAddress: async () => state.userAddress,
         getContractAddress: async () => state.contractAddress,
-        originate: async () : Promise<string> => {
-            if(state.contractAddress){ throw new Error(`Contract already originated at ${state.contractAddress}`); }
+        connectWallet: async () => {
+            console.log('connectWallet START');
+
+            const wallet = new BeaconWallet({
+                name: "Example Dapp",
+            });
+            await wallet.requestPermissions({ 
+                network: { 
+                    rpcUrl,
+                    type: NetworkType.CUSTOM,
+                },
+            });
+
+            state.userAddress = await wallet.getPKH();
+            Tezos.setWalletProvider(wallet);
+
+            state.isConnected = true;
+
+            console.log('connectWallet DONE');
+        },
+        loadContract: async (contractAddress: string) => {
+            if(!state.isConnected){ throw new Error('Not connected'); }
+           
+            state.contract = await Tezos.wallet.at<ExampleWalletType>(contractAddress);
+            state.contractAddress = state.contract.address;
+    
+            console.log('setup', {state});
+        },
+        originateContract: async () => {
+            if(!state.isConnected){ throw new Error('Not connected'); }
 
             // Originate contract
-            const origination = await Tezos.contract.originate<ExampleContractType>({
+            const origination = await Tezos.wallet.originate<ExampleWalletType>({
                 code: ExampleCode.code,
                 storage: tas.int(42),
-            });
-            // Wait for confirmations
-            const contract = await origination.contract(5);
-            // Store address
-            state.contractAddress = contract.address;
+            }).send();
 
-            return state.contractAddress;
+            state.contract = await origination.contract();
+            state.contractAddress = state.contract.address;
         },
         getBalance: async () : Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }

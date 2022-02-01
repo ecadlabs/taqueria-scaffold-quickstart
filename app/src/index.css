@@ -33,3 +33,19 @@ body {
     background: #333333;
     color: #FFFFFF;
 }
+
+.app {
+    margin: 16px
+}
+
+.error {
+    color: #FF8888;
+}
+
+h3 {
+    margin-top: 16px;
+}
+
+button {
+    margin-right: 4px;
+}

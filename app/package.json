@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@taquito/beacon-wallet": "^11.1.0-039247ac--1343",
+    "@taquito/signer": "^11.1.0-039247ac--1343",
     "@taquito/taquito": "^11.1.0-039247ac--1343",
     "@taquito/utils": "^11.1.0-039247ac--1343",
     "@testing-library/jest-dom": "^5.16.1",
@@ -18,6 +19,7 @@
     "crypto-browserify": "^3.12.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "react": "^17.0.2",
     "react-app-rewired": "^2.1.11",
@@ -52,5 +54,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:20000"
 }

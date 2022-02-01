@@ -21,7 +21,8 @@ export const useAsyncWorker = () => {
                 if (!isMounted.current) { return; }
                 setLoadingError({ loading: false, error: null });
             } catch (err) {
-                setLoadingError({ loading: false, error: { message: options?.messageIfError ?? `Error`, innerError: err } });
+                console.error('doWork Error: ', { err });
+                setLoadingError({ loading: false, error: { message: options?.messageIfError ?? (err as Record<string,string>).message ?? `Error`, innerError: err } });
             }
         })();
     };

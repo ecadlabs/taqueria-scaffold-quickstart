@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "start:contract:local": "cd contract && npm run start:local",
-    "start:app:local": "cd app && npm run start:local"
+    "start": "npm run start:contract:local && npm run start:app:local",
+    "start:contract:local": "cd ./contract && npm run start:local",
+    "start:app:local": "cd ./app && npm run start"
   }
 }

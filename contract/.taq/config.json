@@ -28,7 +28,9 @@
             "sandboxes": [
                 "local"
             ],
-            "storage": {}
+            "storage": {
+                "example.tz": 42
+            }
         }
     },
     "sandbox": {

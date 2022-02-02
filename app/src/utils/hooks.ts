@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export type UpdateProgressCallback = (progress: { message: string }) => void;
+export type UpdateProgressCallback = (progressMessage: string) => void;
 export const useAsyncWorker = () => {
     const isMounted = useRef(true);
 
@@ -28,11 +28,11 @@ export const useAsyncWorker = () => {
             }
         };
         let timeoutId = setTimeout(()=>{},0);
-        const updateAutoProgressTicker = (progress: { message: string }) => {
+        const updateAutoProgressTicker = (progressMessage: string) => {
             clearTimeout(timeoutId);
             setTimeout(()=>{
                 setLoadingError(s => {
-                    if(!s.loading || s.progress.message !== progress.message){
+                    if(!s.loading || s.progress.message !== progressMessage){
                         return s;
                     }
 
@@ -45,19 +45,19 @@ export const useAsyncWorker = () => {
                     };
                 });
 
-                updateAutoProgressTicker(progress);
+                updateAutoProgressTicker(progressMessage);
             }, 1000);
         };
 
-        const updateProgress = (progress: { message: string }) => {
+        const updateProgress = (progressMessage: string) => {
             setLoadingError(s => ({
                 ...s,
                 progress: {
-                    message: progress.message,
+                    message: progressMessage,
                     ratioComplete: 1 - ((1 - s.progress.ratioComplete) * 0.9),
                 }
             }))
-            updateAutoProgressTicker(progress);
+            updateAutoProgressTicker(progressMessage);
         };
 
         (async () => {

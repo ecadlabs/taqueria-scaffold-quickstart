@@ -40,7 +40,7 @@ const createContractService = () => {
         connectWallet: async (updateProgress: UpdateProgressCallback) => {
             console.log('connectWallet START');
 
-            updateProgress({ message: 'Requesting Permissions' });
+            updateProgress( 'Requesting Permissions' );
 
             const wallet = new BeaconWallet({
                 name: "Example Dapp",
@@ -49,7 +49,7 @@ const createContractService = () => {
                 network,
             });
 
-            updateProgress({ message: 'Obtaining User Info' });
+            updateProgress( 'Obtaining User Info' );
 
             state.userAddress = await wallet.getPKH();
             Tezos.setWalletProvider(wallet);
@@ -63,7 +63,7 @@ const createContractService = () => {
         loadContract: async (updateProgress: UpdateProgressCallback, contractAddress: string) => {
             if(!state.isConnected){ throw new Error('Not connected'); }
            
-            updateProgress({message: 'Loading Contract'});
+            updateProgress( 'Loading Contract' );
 
             state.contract = await Tezos.wallet.at<ExampleWalletType>(contractAddress);
             state.contractAddress = state.contract.address;
@@ -74,21 +74,21 @@ const createContractService = () => {
             if(!state.isConnected){ throw new Error('Not connected'); }
 
             // Originate contract
-            updateProgress({message: 'Originating Contract'});
+            updateProgress( 'Originating Contract' );
 
             const origination = await Tezos.wallet.originate<ExampleWalletType>({
                 code: ExampleCode.code,
                 storage: tas.int(42),
             }).send();
 
-            updateProgress({message: 'Confirming Contract'});
+            updateProgress( 'Confirming Contract' );
             state.contract = await origination.contract();
             state.contractAddress = state.contract.address;
         },
         getBalance: async (updateProgress: UpdateProgressCallback) : Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }
 
-            updateProgress({message: 'Getting Balance'});
+            updateProgress( 'Getting Balance' );
 
             const storage = await state.contract.storage();
             console.log('getBalance storage', {storage});
@@ -97,10 +97,10 @@ const createContractService = () => {
         increment: async (updateProgress: UpdateProgressCallback, amount: number): Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }
 
-            updateProgress({message: 'Sending Transaction'});
+            updateProgress( 'Sending Transaction' );
             const sendResult = await state.contract.methodsObject.increment(tas.int(amount)).send();
 
-            updateProgress({message: 'Confirming Transaction'});
+            updateProgress( 'Confirming Transaction' );
             await sendResult.confirmation(5);
 
             // Read state after update
@@ -109,10 +109,10 @@ const createContractService = () => {
         decrement: async (updateProgress: UpdateProgressCallback, amount: number): Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }
 
-            updateProgress({message: 'Sending Transaction'});
+            updateProgress( 'Sending Transaction' );
             const sendResult = await state.contract.methodsObject.decrement(tas.int(amount)).send();
             
-            updateProgress({message: 'Confirming Transaction'});
+            updateProgress( 'Confirming Transaction' );
             await sendResult.confirmation(5);
 
             // Read state after update

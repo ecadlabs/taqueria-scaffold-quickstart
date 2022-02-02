@@ -16,12 +16,14 @@ const createContractService = () => {
     const state = {
         isConnected: false,
         userAddress: undefined as undefined | string,
+        userBalance: undefined as undefined | number,
         contractAddress: undefined as undefined | string,
         contract: undefined as undefined | ExampleWalletType,
     };
 
     const service = {
         getUserAddress: async () => state.userAddress,
+        getUserBalance: async () => state.userBalance,
         getContractAddress: async () => state.contractAddress,
         connectWallet: async () => {
             console.log('connectWallet START');
@@ -38,6 +40,8 @@ const createContractService = () => {
 
             state.userAddress = await wallet.getPKH();
             Tezos.setWalletProvider(wallet);
+
+            state.userBalance = (await Tezos.tz.getBalance(state.userAddress)).toNumber();
 
             state.isConnected = true;
 

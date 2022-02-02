@@ -8,6 +8,8 @@ export const App = () => {
   const [isContractReady, setIsContractReady] = useState(false);
 
   const [userAddress, setUserAddress] = useState(undefined as undefined | string);
+  const [userBalance, setUserBalance] = useState(undefined as undefined | number);
+
   const [contractAddress, setContractAddress] = useState(undefined as undefined | string);
   const [balance, setBalance] = useState(0);
 
@@ -17,8 +19,10 @@ export const App = () => {
     doWork(async (stopIfUnmounted)=>{
       await ContractService.connectWallet();
       const resultUserAddress = await ContractService.getUserAddress();
+      const resultUserBalance = await ContractService.getUserBalance();
       stopIfUnmounted();
       setUserAddress(resultUserAddress);
+      setUserBalance(resultUserBalance);
       setIsWalletReady(true);
     });
   };
@@ -86,9 +90,10 @@ export const App = () => {
         <>
           <h3>User</h3>
           <div>user address: {userAddress}</div>
+          <div>user balance: {userBalance}</div>
         </>
       )}
-      
+
       {isWalletReady && !isContractReady && (
         <>
             <h3>Enter Existing Contract Address</h3>

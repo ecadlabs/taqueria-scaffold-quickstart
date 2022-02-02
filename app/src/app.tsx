@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ContractService } from './services/contract-service';
-import { useAsyncWorker } from './utils/hooks';
+import { UpdateProgressCallback, useAsyncWorker } from './utils/hooks';
 
 export const App = () => {
 
@@ -13,11 +13,11 @@ export const App = () => {
   const [contractAddress, setContractAddress] = useState(undefined as undefined | string);
   const [balance, setBalance] = useState(0);
 
-  const {loading, error, doWork} = useAsyncWorker(); 
+  const {loading, error, progress, doWork} = useAsyncWorker(); 
 
   const connectWallet = () => {
-    doWork(async (stopIfUnmounted)=>{
-      await ContractService.connectWallet();
+    doWork(async (stopIfUnmounted, updateProgress)=>{
+      await ContractService.connectWallet(updateProgress);
       const resultUserAddress = await ContractService.getUserAddress();
       const resultUserBalance = await ContractService.getUserBalance();
       stopIfUnmounted();
@@ -27,14 +27,14 @@ export const App = () => {
     });
   };
 
-  const loadData = async (stopIfUnmounted: () => void) => {
+  const loadData = async (stopIfUnmounted: () => void, updateProgress: UpdateProgressCallback) => {
     const resultContractAddress = await ContractService.getContractAddress();
     stopIfUnmounted();
 
     setContractAddress(resultContractAddress);
 
     // Get balance
-    const balanceResult = await ContractService.getBalance();
+    const balanceResult = await ContractService.getBalance(updateProgress);
     stopIfUnmounted();
     setBalance(balanceResult);
 
@@ -44,31 +44,31 @@ export const App = () => {
   const loadContract = () => {
     if(!contractAddress){ return; }
 
-    doWork(async (stopIfUnmounted)=>{
-      await ContractService.loadContract(contractAddress);
-      await loadData(stopIfUnmounted);
+    doWork(async (stopIfUnmounted, updateProgress)=>{
+      await ContractService.loadContract(updateProgress, contractAddress);
+      await loadData(stopIfUnmounted, updateProgress);
     });
   };
 
   const originateContract = () => {
-    doWork(async (stopIfUnmounted)=>{
-      await ContractService.originateContract();
-      await loadData(stopIfUnmounted);
+    doWork(async (stopIfUnmounted, updateProgress)=>{
+      await ContractService.originateContract(updateProgress);
+      await loadData(stopIfUnmounted, updateProgress);
     });
   };
   const increment = () => {
-    doWork(async (stopIfUnmounted)=>{
+    doWork(async (stopIfUnmounted, updateProgress)=>{
 
-      const result = await ContractService.increment(1);
+      const result = await ContractService.increment(updateProgress, 1);
       stopIfUnmounted();
 
       setBalance(result);
     });
   };
   const decrement = () => {
-    doWork(async (stopIfUnmounted)=>{
+    doWork(async (stopIfUnmounted, updateProgress)=>{
 
-      const result = await ContractService.decrement(1);
+      const result = await ContractService.decrement(updateProgress, 1);
       stopIfUnmounted();
 
       setBalance(result);
@@ -77,7 +77,7 @@ export const App = () => {
 
   return (
     <div className='app'>
-      {loading && (<div>loading...</div>)}
+      {loading && (<div>loading... {progress.message} {(progress.ratioComplete * 100).toFixed(0)}%</div>)}
       {error && (<div className='error'>{error.message}</div>)}
 
       {!isWalletReady && (

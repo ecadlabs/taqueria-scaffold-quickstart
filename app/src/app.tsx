@@ -77,7 +77,7 @@ export const App = () => {
 
   return (
     <div className='app'>
-      {loading && (<div>loading... {progress.message} {(progress.ratioComplete * 100).toFixed(0)}%</div>)}
+      {loading && (<div className='loading'>loading... {progress.message} {(progress.ratioComplete * 100).toFixed(0)}%</div>)}
       {error && (<div className='error'>{error.message}</div>)}
 
       {!isWalletReady && (
@@ -97,7 +97,7 @@ export const App = () => {
       {isWalletReady && !isContractReady && (
         <>
             <h3>Enter Existing Contract Address</h3>
-            <input type={'text'} value={contractAddress} onChange={x => setContractAddress(x.target.value)} />
+            <input type={'text'} value={contractAddress||''} onChange={x => setContractAddress(x.target.value)} />
             <button onClick={loadContract}>Load Contract</button>
 
             <h3>Deploy (Originate) New Contract</h3>

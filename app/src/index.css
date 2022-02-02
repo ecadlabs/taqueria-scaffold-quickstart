@@ -42,6 +42,10 @@ body {
     color: #FF8888;
 }
 
+.loading {
+  color: #33FF33;
+}
+
 h3 {
     margin-top: 16px;
 }

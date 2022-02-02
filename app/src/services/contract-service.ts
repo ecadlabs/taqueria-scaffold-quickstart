@@ -65,8 +65,8 @@ const createContractService = () => {
            
             updateProgress( 'Loading Contract' );
 
+            state.contractAddress = contractAddress;
             state.contract = await Tezos.wallet.at<ExampleWalletType>(contractAddress);
-            state.contractAddress = state.contract.address;
     
             console.log('setup', {state});
         },
@@ -82,8 +82,9 @@ const createContractService = () => {
             }).send();
 
             updateProgress( 'Confirming Contract' );
-            state.contract = await origination.contract();
-            state.contractAddress = state.contract.address;
+            const contractAddress = (await origination.contract()).address;
+            state.contractAddress = contractAddress;
+            state.contract = await Tezos.wallet.at<ExampleWalletType>(contractAddress);
         },
         getBalance: async (updateProgress: UpdateProgressCallback) : Promise<number> => {
             if(!state.contract){ throw new Error('Contract is not setup'); }

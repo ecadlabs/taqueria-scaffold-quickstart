@@ -90,7 +90,7 @@ export const App = () => {
         <>
           <h3>User</h3>
           <div>user address: {userAddress}</div>
-          <div>user balance: {userBalance}</div>
+          <div>user balance: {userBalance} ꜩ</div>
         </>
       )}
 

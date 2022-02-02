@@ -41,7 +41,7 @@ const createContractService = () => {
             state.userAddress = await wallet.getPKH();
             Tezos.setWalletProvider(wallet);
 
-            state.userBalance = (await Tezos.tz.getBalance(state.userAddress)).toNumber();
+            state.userBalance = (await Tezos.tz.getBalance(state.userAddress)).toNumber() / 1000000;
 
             state.isConnected = true;
 

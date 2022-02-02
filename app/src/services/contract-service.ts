@@ -9,9 +9,20 @@ const createContractService = () => {
     // localhost:4242 - flextesa local network
     // const Tezos = new TezosToolkit(`http://localhost:20000`);
 
-    // Using proxy
-    const rpcUrl = `/`;
-    const Tezos = new TezosToolkit(rpcUrl);
+    // // Flextesa
+    // const network = { 
+    //     // Use react dev server proxy
+    //     rpcUrl:  `/`,
+    //     type: NetworkType.CUSTOM,
+    // };
+
+    // Testnet
+    const network = {
+        type: NetworkType.HANGZHOUNET,
+        rpcUrl: "https://hangzhounet.api.tez.ie"
+    };
+
+    const Tezos = new TezosToolkit(network.rpcUrl);
 
     const state = {
         isConnected: false,
@@ -32,10 +43,7 @@ const createContractService = () => {
                 name: "Example Dapp",
             });
             await wallet.requestPermissions({ 
-                network: { 
-                    rpcUrl,
-                    type: NetworkType.CUSTOM,
-                },
+                network,
             });
 
             state.userAddress = await wallet.getPKH();
@@ -64,6 +72,7 @@ const createContractService = () => {
                 storage: tas.int(42),
             }).send();
 
+            console.log('Deploying contract... might take a bit...')
             state.contract = await origination.contract();
             state.contractAddress = state.contract.address;
         },

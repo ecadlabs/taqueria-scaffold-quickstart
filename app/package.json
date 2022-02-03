@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@airgap/beacon-sdk": "^2.3.9",
-    "@taquito/beacon-wallet": "11.2.0-beta-RC.0",
-    "@taquito/signer": "11.2.0-beta-RC.0",
-    "@taquito/taquito": "11.2.0-beta-RC.0",
-    "@taquito/utils": "11.2.0-beta-RC.0",
+    "@taquito/beacon-wallet": "^11.2.0",
+    "@taquito/signer": "^11.2.0",
+    "@taquito/taquito": "^11.2.0",
+    "@taquito/utils": "^11.2.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -33,7 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "HTTPS=true react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"

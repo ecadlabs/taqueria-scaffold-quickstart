@@ -5,10 +5,10 @@
     "start:local": "taq compile && taq types -o ../app/src/types && taq start sandbox local && taq deploy"
   },
   "dependencies": {
-    "@taqueria/plugin-contract-types": "0.0.0-pr-91-c766ce65",
-    "@taqueria/plugin-flextesa": "0.0.0-pr-91-c766ce65",
-    "@taqueria/plugin-ligo": "0.0.0-pr-91-c766ce65",
-    "@taqueria/plugin-taquito": "0.0.0-pr-91-c766ce65",
-    "@taquito/taquito": "11.2.0-beta-RC.0"
+    "@taqueria/plugin-contract-types": "0.0.0-pr-91-76c4d86b",
+    "@taqueria/plugin-flextesa": "0.0.0-pr-91-76c4d86b",
+    "@taqueria/plugin-ligo": "0.0.0-pr-91-76c4d86b",
+    "@taqueria/plugin-taquito": "0.0.0-pr-91-76c4d86b",
+    "@taquito/taquito": "^11.2.0"
   }
 }

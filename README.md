@@ -11,7 +11,7 @@
     - Call contract methods
     - Access contract storage
 
-- `contract`
+- `taqueria`
 
     - Everything related to the contract
     - `contract/.taq`

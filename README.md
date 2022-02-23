@@ -1,3 +1,8 @@
+### Compile the sample contract and Run the app
+
+- `npm run setup`
+- `npm run start`
+
 ### File Structure
 
 - `app`

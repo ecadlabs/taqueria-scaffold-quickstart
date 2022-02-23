@@ -1,8 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "start": "npm run start:contract:local && npm run start:app:local",
-    "start:contract:local": "cd ./contract && npm run start:local",
-    "start:app:local": "cd ./app && npm run start"
+    "setup": "npm run setup:contract && npm run setup:app",
+    "setup:contract": "cd ./contract && npm install && taq init",
+    "setup:app": "cd ./app && npm install",
+    "start": "npm run build:contract && npm run start:app",
+    "build:contract": "cd ./contract && npm run build",
+    "start:app": "cd ./app && npm run start",
+    "start:local": "npm run start:contract:local && npm run start:app",
+    "start:contract:local": "cd ./contract && npm run start:local"
   }
 }

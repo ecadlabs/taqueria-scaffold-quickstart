@@ -2,7 +2,9 @@
   "private": true,
   "name": "@local/contract",
   "scripts": {
-    "start:local": "taq compile && taq generate types ../app/src/types && taq start sandbox local && taq deploy"
+    "build": "taq compile && taq generate types ../app/src/types",
+    "start:local": "npm run build && taq start sandbox local && taq deploy",
+    "stop:local": "taq stop sandbox local"
   },
   "dependencies": {
     "@taqueria/plugin-contract-types": "0.0.0-pr-91-23dfbbd4",

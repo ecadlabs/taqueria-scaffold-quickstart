@@ -7,10 +7,10 @@
     "stop:local": "taq stop sandbox local"
   },
   "dependencies": {
-    "@taqueria/plugin-contract-types": "0.0.0-pr-91-23dfbbd4",
-    "@taqueria/plugin-flextesa": "0.0.0-pr-91-23dfbbd4",
-    "@taqueria/plugin-ligo": "0.0.0-pr-91-23dfbbd4",
-    "@taqueria/plugin-taquito": "0.0.0-pr-91-23dfbbd4",
+    "@taqueria/plugin-contract-types": "latest",
+    "@taqueria/plugin-flextesa": "latest",
+    "@taqueria/plugin-ligo": "latest",
+    "@taqueria/plugin-taquito": "latest",
     "@taquito/taquito": "^11.2.0"
   }
 }

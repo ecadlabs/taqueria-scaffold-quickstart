@@ -8,6 +8,8 @@
     "build:taqueria": "cd ./taqueria && npm run build",
     "start:app": "cd ./app && npm run start",
     "start:local": "npm run start:taqueria:local && npm run start:app",
-    "start:taqueria:local": "cd ./taqueria && npm run start:local"
+    "start:taqueria:local": "cd ./taqueria && npm run start:local",
+    "stop:local": "npm run stop:taqueria:local",
+    "stop:taqueria:local": "cd ./taqueria && npm run stop:local"
   }
 }

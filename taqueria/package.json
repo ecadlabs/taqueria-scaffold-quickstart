@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@local/contract",
+  "name": "@local/taqueria",
   "scripts": {
     "build": "taq compile && taq generate types ../app/src/types",
     "start:local": "npm run build && taq start sandbox local && taq deploy",

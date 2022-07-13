@@ -19,8 +19,8 @@ const createContractService = () => {
 
     // Testnet
     const network = {
-        type: NetworkType.HANGZHOUNET,
-        rpcUrl: "https://hangzhounet.api.tez.ie"
+        type: NetworkType.GHOSTNET,
+        rpcUrl: "https://ghostnet.api.tez.ie"
     };
 
     const Tezos = new TezosToolkit(network.rpcUrl);

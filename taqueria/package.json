@@ -11,6 +11,6 @@
     "@taqueria/plugin-flextesa": "latest",
     "@taqueria/plugin-ligo": "latest",
     "@taqueria/plugin-taquito": "latest",
-    "@taquito/taquito": "^11.2.0"
+    "@taquito/taquito": "latest"
   }
 }

@@ -2,39 +2,30 @@
     "language": "en",
     "plugins": [
         {
-            "type": "npm",
-            "name": "@taqueria/plugin-flextesa"
+            "name": "@taqueria/plugin-flextesa",
+            "type": "npm"
         },
         {
-            "type": "npm",
-            "name": "@taqueria/plugin-ligo"
+            "name": "@taqueria/plugin-ligo",
+            "type": "npm"
         },
         {
-            "type": "npm",
-            "name": "@taqueria/plugin-taquito"
+            "name": "@taqueria/plugin-taquito",
+            "type": "npm"
         },
         {
-            "type": "npm",
-            "name": "@taqueria/plugin-contract-types"
+            "name": "@taqueria/plugin-contract-types",
+            "type": "npm"
         }
     ],
     "contractsDir": "contracts",
-    "testsDir": "tests",
     "artifactsDir": "artifacts",
-    "environment": {
-        "default": "development",
-        "development": {
-            "networks": [],
-            "sandboxes": [
-                "local"
-            ],
-            "storage": {
-                "example.tz": 42
-            }
-        }
-    },
+    "network": {},
     "sandbox": {
         "local": {
+            "label": "Local Tezos Sandbox",
+            "rpcUrl": "http://localhost:20000",
+            "protocol": "Psithaca2MLRFYargivpo7YvUr7wUDqyxrdhC5CQq78mRvimz6A",
             "accounts": {
                 "bob": {
                     "encryptedKey": "edpkurPsQ8eUApnLUJ9ZPDvu98E8VNj4KtJa1aZr16Cr5ow5VHKnz4",
@@ -61,18 +52,32 @@
                     "publicKeyHash": "tz1MVGjgD1YtAPwohsSfk8i3ZiT1yEGM2YXB",
                     "secretKey": "unencrypted:edsk3Un2FU9Zeb4KEoATWdpAqcX5JArMUj2ew8S4SuzhPRDmGoqNx2"
                 }
-            },
-            "label": "Local Tezos Sandbox",
-            "protocol": "Psithaca2MLRFYargivpo7YvUr7wUDqyxrdhC5CQq78mRvimz6A",
-            "rpcUrl": "http://localhost:20000"
+            }
         }
     },
-    "network": {},
+    "environment": {
+        "default": "development",
+        "development": {
+            "networks": [],
+            "sandboxes": [
+                "local"
+            ],
+            "storage": {
+                "example.tz": 42
+            }
+        }
+    },
     "accounts": {
         "bob": "3_000_000_000",
         "alice": "3_000_000_000",
         "john": "3_000_000_000",
         "jane": "3_000_000_000",
         "joe": "3_000_000_000"
+    },
+    "contracts": {
+        "example.jsligo": {
+            "sourceFile": "example.jsligo",
+            "hash": "53d8f697719b141876f50686042211a98c4575c0ef03e73379cc3f6e52d9bf36"
+        }
     }
 }
